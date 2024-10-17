@@ -1,0 +1,51 @@
+---
+- name: ensure evilginx directory exists
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ evilginx_base_dir }}"
+    - "{{ evilginx_base_dir }}/phishlets"
+    - "{{ evilginx_base_dir }}/config"
+    - "{{ evilginx_base_dir }}/templates"
+    - "{{ evilginx_base_dir }}/build"
+
+# deploy's a single phishlet. Potentially will need to be able to deploy multiple in the future.
+- name: deploy phishlet
+  ansible.builtin.template:
+    src: "phishlets/{{ evilginx_phishlet }}.yaml.j2"
+    dest: "{{ evilginx_base_dir }}/phishlets/{{ evilginx_phishlet }}.j2"
+    owner: root
+    mode: 0777
+  notify:
+    - restart evilginx
+
+- name: deploy config
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: "{{ evilginx_base_dir }}/config/config.yaml"
+    owner: root
+    mode: 0777
+  notify:
+    - restart evilginx
+
+- name: deploy build dockerfile
+  ansible.builtin.template:
+    src: Dockerfile.j2
+    dest: "{{ evilginx_base_dir }}/build/Dockerfile"
+    owner: root
+    mode: 0777
+
+- name: deploy docker entrypoint
+  ansible.builtin.copy:
+    src: docker-entrypoint.sh
+    dest: "{{ evilginx_base_dir }}/build/docker-entrypoint.sh"
+    owner: root
+    mode: 0777
+
+- name: deploy docker compose
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ evilginx_base_dir }}/build/docker-compose.yml"
+    owner: root
+    mode: 0777

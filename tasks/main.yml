@@ -1,2 +1,10 @@
 ---
-# tasks file for deploy-evilginx2
+# tasks file for deploy-evilginx
+- name: ensure dependencies
+  include_tasks: dependencies.yml
+
+- name: ensure deployment
+  include_tasks: deployment.yml
+
+- name: ensure container
+  include_tasks: container.yml

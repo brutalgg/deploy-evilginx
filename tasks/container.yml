@@ -1,0 +1,15 @@
+---
+- name: build evilginx2 container
+  community.docker.docker_image:
+    build:
+      dockerfile: Dockerfile
+      path: "{{ evilginx_base_dir }}/build"
+    name: evilginx2
+    tag: "{{ evilginx_version }}"
+    source: build
+
+- name: ensure compose up
+  community.docker.docker_compose_v2:
+    project_src: "{{ evilginx_base_dir }}/build"
+    files: docker-compose.yml
+    state: present

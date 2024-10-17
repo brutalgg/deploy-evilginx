@@ -1,2 +1,9 @@
 ---
-# handlers file for deploy-evilginx2
+# handlers file for deploy-evilginx
+
+- name: restart evilginx
+  community.docker.docker_compose_v2:
+    project_src: "{{ evilginx_base_dir }}/build"
+    files: docker-compose.yml
+    state: restarted
+    services: "evilginx2"

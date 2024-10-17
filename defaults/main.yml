@@ -1,2 +1,19 @@
 ---
-# defaults file for deploy-evilginx2
+# defaults file for deploy-evilginx
+evilginx_domain: example.com
+evilginx_redirect_domain: sample.com
+
+
+evilginx_base_dir: "/opt/docker/evilginx"
+
+evilginx_phishlet: "o365"
+
+evilginx_version: "v3.3.0"
+
+evilginx_container_name: "evilginx2"
+evilginx_hostname: "evilginx2"
+evilginx_entry_point: "/bin/evilginx -p /phishlets -c /config -t /templates -debug -developer"
+evilginx_docker_network: evilginx
+evilginx_ports:
+  - "80:80"
+  - "443:443"

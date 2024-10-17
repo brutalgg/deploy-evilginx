@@ -1,0 +1,19 @@
+services:
+  evilginx2:
+    container_name: "{{ evilginx_container_name }}"
+    hostname: "{{ evilginx_hostname }}"
+    image: evilginx2:{{ evilginx_version }}
+    restart: always
+    entrypoint: "{{ evilginx_entry_point }}"
+    ports: {{ evilginx_ports | to_yaml }}
+    volumes:
+      - "{{ evilginx_base_dir }}/config:/config"
+      - "{{ evilginx_base_dir }}/phishlets:/phishlets"
+      - "{{ evilginx_base_dir }}/templates:/templates"
+    networks:
+      - "{{ evilginx_docker_network }}"
+    tty: true  # Interactive mode
+
+networks:
+  "{{ evilginx_docker_network }}":
+    driver: bridge
